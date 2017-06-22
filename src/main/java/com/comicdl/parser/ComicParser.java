@@ -1,19 +1,40 @@
-package com.comicdl;
+package com.comicdl.parser;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.collections4.IteratorUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class ComicParser extends HTMLParser implements IComicInfo {
 
 	private final static Logger log = LogManager.getLogger(ComicParser.class);
-	
+
 	public ComicParser(String urlString) throws IOException {
 		super(urlString);
+	}
+
+	@Override
+	public String getComicId() {
+		// 使用regex找出www.comicbus.com/html/%d的字串模式並取出%d
+		Pattern pattern = Pattern.compile("http://www.comicbus.com/html/(\\d+).html");
+		Matcher matcher = pattern.matcher(super.getUrlString());
+		String id = (matcher.find())? matcher.group(1) : null;
+		log.debug("取得漫畫id：" + id);
+		return id;
+	}
+
+	@Override
+	public String getComicName() {
+		Elements font = super.getDocument().select("[style='font-size:10pt; letter-spacing:1px']");
+		String comicName = font.text();
+		log.debug("取得漫畫名稱：" + comicName);
+		return comicName;
 	}
 
 	@Override
@@ -42,7 +63,7 @@ public class ComicParser extends HTMLParser implements IComicInfo {
 		// 使用regex找出%d-%d的字串模式並取出
 		Pattern pattern = Pattern.compile("([0-9-]+).*");
 		Matcher matcher = pattern.matcher(episode);
-		episode = (matcher.find())? matcher.group(1) : "搜尋錯誤";
+		episode = (matcher.find()) ? matcher.group(1) : "搜尋錯誤";
 		log.debug("取得漫畫集數：" + episode);
 		return episode;
 	}
@@ -64,5 +85,25 @@ public class ComicParser extends HTMLParser implements IComicInfo {
 		log.debug("取得漫畫描述：" + description);
 		return description;
 	}
-	
+
+	@Override
+	public List<Element> volumeAsList() {
+		Element table = super.getDocument().getElementById("rp_comiclist2_0_dl_0");
+		Elements tds = table.getElementsByTag("a");
+		// 將<a>的內容字串轉換為List
+		List<Element> volumes = IteratorUtils.toList(tds.iterator());
+		log.debug("取得漫畫(卷)列表：" + volumes);
+		return volumes;
+	}
+
+	@Override
+	public List<Element> episodeAsList() {
+		Element table = super.getDocument().getElementById("rp_comiclist11_0_dl_0");
+		Elements tds = table.getElementsByTag("a");
+		// 將<a>的內容字串轉換為List
+		List<Element> episodes = IteratorUtils.toList(tds.iterator());
+		log.debug("取得漫畫(集)列表：" + episodes);
+		return episodes;
+	}
+
 }

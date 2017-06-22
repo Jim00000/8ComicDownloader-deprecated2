@@ -1,4 +1,4 @@
-package com.comicdl;
+package com.comicdl.parser;
 
 import java.io.IOException;
 import java.net.URL;
@@ -12,9 +12,14 @@ import org.jsoup.nodes.Document;
 public class HTMLParser{
 
 	private final static Logger log = LogManager.getLogger(HTMLParser.class);
+	private String urlString;
 	private Document document;
 
-	public synchronized final Document getDocument() {
+	protected synchronized final String getUrlString() {
+		return urlString;
+	}
+
+	protected synchronized final Document getDocument() {
 		return document;
 	}
 
@@ -23,6 +28,7 @@ public class HTMLParser{
 	}
 
 	public HTMLParser(String urlString) throws IOException {
+		this.urlString = urlString;
 		initHtmlParsing(urlString);
 	}
 

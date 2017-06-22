@@ -1,6 +1,24 @@
-package com.comicdl;
+package com.comicdl.parser;
+
+import java.util.List;
+
+import org.jsoup.nodes.Element;
 
 public interface IComicInfo {
+
+	/**
+	 * 從http://www.comicbus.com/html/%d.html裡分析取出漫畫id--->%d
+	 * 
+	 * @return 漫畫id
+	 */
+	public String getComicId();
+
+	/**
+	 * 取得漫畫的名稱
+	 * 
+	 * @return 漫畫名
+	 */
+	public String getComicName();
 
 	/**
 	 * 取得漫畫的類別
@@ -25,14 +43,30 @@ public interface IComicInfo {
 
 	/**
 	 * 取得目前漫畫的更新日期
+	 * 
 	 * @return 格式為yyyy-mm-dd日期字串
 	 */
 	public String getUpdate();
-	
+
 	/**
 	 * 取得漫畫的介紹
+	 * 
 	 * @return 漫畫的介紹
 	 */
 	public String getComicDescription();
+
+	/**
+	 * 取得漫畫列表所有漫畫卷數
+	 * 
+	 * @return
+	 */
+	public List<Element> volumeAsList();
+
+	/**
+	 * 取得所有漫畫集數
+	 * 
+	 * @return
+	 */
+	public List<Element> episodeAsList();
 
 }

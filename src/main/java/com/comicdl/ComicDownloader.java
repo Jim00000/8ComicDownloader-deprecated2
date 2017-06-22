@@ -1,18 +1,27 @@
 package com.comicdl;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import java.io.IOException;
 
 import com.comicdl.parser.ComicParser;
 
-public class ComicDownloader {
+public abstract class ComicDownloader implements Downloadable {
 
-	private final static Logger log = LogManager.getLogger(ComicDownloader.class);
 	private String comicId;
+	private String episodeRange;
 	private ComicParser parser;
+	
+	protected synchronized final String getComicId() {
+		return comicId;
+	}
 
-	public ComicDownloader(String urlString) {
+	protected synchronized final String getEpisodeRange() {
+		return episodeRange;
+	}
 
+	public ComicDownloader(String urlString) throws IOException {
+		this.parser = new ComicParser(urlString);
+		this.comicId = parser.getComicId();
+		this.episodeRange = parser.getEpisode();
 	}
 
 }

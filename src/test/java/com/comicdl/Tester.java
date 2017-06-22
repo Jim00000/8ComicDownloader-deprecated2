@@ -25,8 +25,8 @@ public class Tester {
 //		cp.volumeAsList();
 //		cp.episodeAsList();
 		
-		DownloadParser dlp = new DownloadParser(103,471,2);
-		dlp.decode();
+		DownloadParser dlp = new DownloadParser(103,471,18);
+		dlp.getPageCount();
 		
 	}
 

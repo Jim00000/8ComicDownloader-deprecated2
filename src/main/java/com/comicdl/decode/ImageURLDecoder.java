@@ -9,6 +9,11 @@ public class ImageURLDecoder implements IDecodable {
 	private String ch,chs, ti, cs;
 	private final int f = 50;
 	private int p;
+	private int allPageCount = 0;
+
+	public synchronized final int getAllPageCount() {
+		return allPageCount;
+	}
 
 	public ImageURLDecoder(String ch,String chs, String ti, String cs,int p) {
 		this.ch = ch;
@@ -55,6 +60,9 @@ public class ImageURLDecoder implements IDecodable {
 			c = ss(cs, cc - f, f, null);
 			ch=chs;
 		}
+		
+		// 計算漫畫總頁數
+		this.allPageCount = Integer.parseInt(ss(c,7,3,null));
 
 		return si(c);
 	}

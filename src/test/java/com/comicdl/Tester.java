@@ -5,14 +5,16 @@ import org.apache.log4j.PropertyConfigurator;
 import com.comicdl.decode.ImageURLDecoder;
 import com.comicdl.parser.ComicParser;
 import com.comicdl.parser.DownloadParser;
+import com.comicdl.parser.JsoupDownloadParser;
+import com.comicdl.parser.JsoupDownloadParser;
 
 @SuppressWarnings("unused")
 public class Tester {
 
 	public static void main(String[] args) throws Throwable {
 		PropertyConfigurator.configure(System.getProperty("user.dir")+ "/src/log4j.properties");
-//		ComicDownloader cd = new JsoupDownloader("http://www.comicbus.com/html/103.html");
-//		cd.download(471);
+		ComicDownloader cd = new JsoupDownloader("http://www.comicbus.com/html/103.html");
+		cd.download(471);
 
 //		ComicParser cp = new ComicParser("http://www.comicbus.com/html/103.html");
 //		cp.getComicId();
@@ -24,10 +26,7 @@ public class Tester {
 //		cp.getComicDescription();
 //		cp.volumeAsList();
 //		cp.episodeAsList();
-		
-		DownloadParser dlp = new DownloadParser(103,471,18);
-		dlp.getPageCount();
-		
+				
 	}
 
 }

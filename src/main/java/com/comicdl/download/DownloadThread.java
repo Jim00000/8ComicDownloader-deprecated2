@@ -20,13 +20,20 @@ import org.apache.log4j.Logger;
 public class DownloadThread implements Runnable {
 
 	private final static Logger log = LogManager.getLogger(DownloadThread.class);
+	private final static boolean detailedInfo = false;
 	private String urlString;
 	private String fileName;
 	private long totalSize;
+	private DownloadState state;
 
 	public DownloadThread(String urlString, String fileName) {
 		this.urlString = urlString;
 		this.fileName = fileName;
+	}
+
+	public DownloadThread(String urlString, String fileName, DownloadState state) {
+		this(urlString, fileName);
+		this.state = state;
 	}
 
 	@Override
@@ -39,8 +46,13 @@ public class DownloadThread implements Runnable {
 			if (response.getStatusLine().getStatusCode() == 200) {
 				HttpEntity entity = response.getEntity();
 				totalSize = entity.getContentLength();
-				log.info("下載檔案:" + urlString);
-				log.info("檔案大小:" + totalSize);
+				// 更新DownloadState的檔案大小
+				if (state != null)
+					state.updateSize(totalSize);
+				if (detailedInfo) {
+					log.info("下載檔案:" + urlString);
+					log.info("檔案大小:" + totalSize);
+				}
 				BufferedInputStream bis = new BufferedInputStream(entity.getContent());
 				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(fileName)));
 				ByteBuffer buf = ByteBuffer.allocate(1024);
@@ -50,8 +62,14 @@ public class DownloadThread implements Runnable {
 					if (readByte == -1)
 						break;
 					bos.write(buf.array(), 0, readByte);
+					// 更新目前已下載檔案，單位:bytes
 					allwrited += readByte;
-					log.info("目前已下載 :" + allwrited + " bytes");
+					// 更新DownloadState的下載進度
+					if (state != null)
+						state.updateProgress(((double)allwrited / (double)totalSize) * 100.0d);
+					if (detailedInfo) {
+						log.info("目前已下載 :" + allwrited + " bytes");
+					}
 				}
 				log.info("檔案" + urlString + "已完成下載，重新命名成" + fileName);
 				bis.close();

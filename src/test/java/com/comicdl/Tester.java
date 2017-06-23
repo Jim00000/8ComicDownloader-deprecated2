@@ -1,8 +1,11 @@
 package com.comicdl;
 
+import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.comicdl.decode.ImageURLDecoder;
+import com.comicdl.download.DownloadManager;
+import com.comicdl.download.DownloadThread;
 import com.comicdl.parser.ComicParser;
 import com.comicdl.parser.DownloadParser;
 import com.comicdl.parser.JsoupDownloadParser;
@@ -13,8 +16,10 @@ public class Tester {
 
 	public static void main(String[] args) throws Throwable {
 		PropertyConfigurator.configure(System.getProperty("user.dir")+ "/src/log4j.properties");
-		ComicDownloader cd = new JsoupDownloader("http://www.comicbus.com/html/103.html");
+		Logger.getLogger("org.apache.http").setLevel(org.apache.log4j.Level.OFF);
+		ComicDownloader cd = new QuickDownloader("http://www.comicbus.com/html/103.html");
 		cd.download(471);
+		cd.close();
 
 //		ComicParser cp = new ComicParser("http://www.comicbus.com/html/103.html");
 //		cp.getComicId();

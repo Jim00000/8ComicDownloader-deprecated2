@@ -13,11 +13,11 @@ import org.apache.log4j.Logger;
 import com.comicdl.parser.DownloadParser;
 import com.comicdl.parser.JsoupDownloadParser;
 
-public class JsoupDownloader extends ComicDownloader {
+public class QuickDownloader extends ComicDownloader {
 
-	private final static Logger log = LogManager.getLogger(JsoupDownloader.class);
+	private final static Logger log = LogManager.getLogger(QuickDownloader.class);
 
-	public JsoupDownloader(String urlString) throws IOException {
+	public QuickDownloader(String urlString) throws IOException {
 		super(urlString);
 	}
 
@@ -48,7 +48,7 @@ public class JsoupDownloader extends ComicDownloader {
 				DownloadParser downloadParser = new JsoupDownloadParser(id, chapter, page);
 				String imageurl = downloadParser.decode();
 				// 將圖片抓下來
-				FileUtils.copyURLToFile(new URL(imageurl), new File(chapter + "_" + page + ".jpg"));
+				downloadManager.download(imageurl, chapter + "_" + page + ".jpg");
 			} catch (IOException e) {
 				log.error(ExceptionUtils.getStackTrace(e));
 			}

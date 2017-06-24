@@ -17,6 +17,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+@SuppressWarnings("unused")
 public class TechValidate {
 
 	private final static Logger logger = LogManager.getLogger(TechValidate.class);

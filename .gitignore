@@ -20,5 +20,6 @@ buildNumber.properties
 *.exe
 
 # Specified folder
-src/resources
+src/resources/
 comic/
+doc/

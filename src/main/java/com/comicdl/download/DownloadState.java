@@ -7,14 +7,18 @@ public class DownloadState implements IObserver {
 
 	private final static Logger log = LogManager.getLogger(DownloadState.class);
 	private long size = 0L;
-	private double progress = 0.0;
+	private int page = 0;
+
+	public synchronized final int getPage() {
+		return page;
+	}
+
+	public synchronized final void setPage(int page) {
+		this.page = page;
+	}
 
 	public synchronized final long getSize() {
 		return size;
-	}
-
-	public synchronized final double getProgress() {
-		return progress;
 	}
 
 	@Override
@@ -24,7 +28,6 @@ public class DownloadState implements IObserver {
 
 	@Override
 	public void updateProgress(double progress) {
-		this.progress = progress;
 		log.info("progress : " + progress + "%");
 	}
 

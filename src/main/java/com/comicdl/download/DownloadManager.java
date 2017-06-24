@@ -17,10 +17,10 @@ public class DownloadManager implements IDownloadService,Closeable {
 	}
 
 	@Override
-	public Future<?> download(String urlString, String fileName) {
-		return executor.submit(new DownloadThread(urlString,fileName));
+	public Future<?> download(int id, int chapter, int page,String dir) {
+		return executor.submit(new DownloadThread(id,chapter,page,dir));
 	}
-
+	
 	@Override
 	public void close() throws IOException {
 		executor.shutdown();

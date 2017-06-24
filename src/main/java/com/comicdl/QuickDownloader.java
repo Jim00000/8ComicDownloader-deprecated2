@@ -2,15 +2,17 @@ package com.comicdl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.jsoup.nodes.Element;
 
+import com.comicdl.download.DownloadState;
 import com.comicdl.parser.DownloadParser;
 import com.comicdl.parser.JsoupDownloadParser;
 
@@ -23,7 +25,7 @@ public class QuickDownloader extends ComicDownloader {
 	}
 
 	@Override
-	public void download(int chapter) throws Throwable {
+	public List<Future<?>> download(int chapter, DownloadState state) throws Throwable {
 		// 檢查comicId
 		if (getComicId() == null)
 			throw new NullPointerException();
@@ -38,28 +40,24 @@ public class QuickDownloader extends ComicDownloader {
 		DownloadParser downloadParser = new JsoupDownloadParser(comicid, chapter, 1);
 		// 取得這集漫畫的頁數
 		int pageCount = downloadParser.getPageCount();
+		if (state != null) {
+			state.setPage(pageCount);
+		}
 		log.info("id = " + comicid + "集數 = " + chapter + "，總共需要下載" + pageCount + "頁");
 		// 執行漫畫下載
-		downloadProcess(comicid, chapter, pageCount);
+		return downloadProcess(comicid, chapter, pageCount);
 	}
 
-	private void downloadProcess(int id, int chapter, int pageCount) {
+	private List<Future<?>> downloadProcess(int id, int chapter, int pageCount) {
+		List<Future<?>> futures = new LinkedList<>();
 		for (int page = 1; page <= pageCount; page++) {
-			try {
-				DownloadParser downloadParser = new JsoupDownloadParser(id, chapter, page);
-				String imageurl = downloadParser.decode();
-				String download_dir = Config.DOWNLOAD_DIR.getPath();
-				// 檢查是否已建立目標漫畫的資料夾
-				File comicDir = FileUtils.getFile(download_dir + "/" + super.getComicName() + "/" + episodeName(chapter));
-				if (comicDir.exists() == false) {
-					comicDir.mkdirs();
-				}
-				// 將圖片抓下來
-				downloadManager.download(imageurl, comicDir + "/" + page + ".jpg");
-			} catch (IOException e) {
-				log.error(ExceptionUtils.getStackTrace(e));
-			}
+			String download_dir = Config.DOWNLOAD_DIR.getPath();
+			File comicDir = FileUtils.getFile(download_dir + "/" + super.getComicName() + "/" + episodeName(chapter));
+			// 將圖片抓下來
+			Future<?> future = downloadManager.download(id, chapter, page, comicDir.getPath());
+			futures.add(future);
 		}
+		return futures;
 	}
 
 	private String episodeName(int chapter) {

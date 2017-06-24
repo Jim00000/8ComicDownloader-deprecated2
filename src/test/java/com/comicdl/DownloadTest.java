@@ -17,6 +17,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+@SuppressWarnings("unused")
 public class DownloadTest {
 
 	public static void main(String args[]) throws Exception, IOException {

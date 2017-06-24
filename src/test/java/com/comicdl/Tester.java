@@ -15,8 +15,11 @@ import com.comicdl.parser.JsoupDownloadParser;
 public class Tester {
 
 	public static void main(String[] args) throws Throwable {
+		PropertyConfigurator.configure(System.getProperty("user.dir") + "/src/log4j.properties");
+		Logger.getLogger("org.apache.http").setLevel(org.apache.log4j.Level.OFF);
+		
 		ComicDownloader cd = new QuickDownloader("http://www.comicbus.com/html/103.html");
-		cd.download(1);
+		cd.download(472,null);
 		cd.close();
 
 //		ComicParser cp = new ComicParser("http://www.comicbus.com/html/103.html");

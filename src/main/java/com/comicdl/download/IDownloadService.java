@@ -4,6 +4,6 @@ import java.util.concurrent.Future;
 
 public interface IDownloadService {
 
-	public Future<?> download(String urlString,String fileName);
-	
+	public Future<?> download(int id, int chapter, int page,String dir);
+		
 }

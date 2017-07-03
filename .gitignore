@@ -23,4 +23,5 @@ buildNumber.properties
 # Specified folder
 src/resources/
 comic/
-doc/
+doc/scripts
+doc/ui-layout

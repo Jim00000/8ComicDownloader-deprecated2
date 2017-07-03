@@ -24,6 +24,7 @@ public class MainScene implements Closeable {
 		root = new VBox();
 		// 加入Menu Bar
 		menuField = new MenuField(root);
+		menuField.toString();
 		// 加入漫畫網址列表
 		comicListField = new ComicListField(root);
 		// 加入漫畫章節列表

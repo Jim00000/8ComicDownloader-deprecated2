@@ -8,6 +8,8 @@ import org.jsoup.nodes.Element;
 
 import com.comicdl.download.DownloadManager;
 import com.comicdl.parser.ComicParser;
+import com.comicdl.parser.DownloadParser;
+import com.comicdl.parser.JsoupDownloadParser;
 
 public abstract class ComicDownloader implements Downloadable,Closeable {
 
@@ -45,6 +47,16 @@ public abstract class ComicDownloader implements Downloadable,Closeable {
 		return episodeRange;
 	}
 	
+	public synchronized final Integer getPageCount(int chapter) {
+		DownloadParser downloadParser = null;
+		try {
+			downloadParser = new JsoupDownloadParser(comicId, chapter, 1);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return downloadParser.getPageCount();
+	}
+
 	public synchronized final List<Element> getEpisodes() {
 		return episodes;
 	}

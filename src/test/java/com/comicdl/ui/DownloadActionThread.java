@@ -37,15 +37,15 @@ public class DownloadActionThread extends Thread {
 		DownloadState state = new DownloadState();
 		List<Future<?>> futures = null;
 		try {
+			row.setPage(downloader.getPageCount(chapter));
 			futures = downloader.download(chapter, state);
 		} catch (Throwable e) {
 			log.error(ExceptionUtils.getStackTrace(e));
 		}
-		row.setPage(Integer.toString(state.getPage()));
 
 		int total = Integer.parseInt(row.getPage());
 		final List<Future<?>> ffutures = futures;
-		timer = new Timeline(new KeyFrame(Duration.millis(200), (e) -> {
+		timer = new Timeline(new KeyFrame(Duration.millis(1000), (e) -> {
 			double count = 0;
 			for (Future<?> future : ffutures) {
 				if (future.isDone()) {

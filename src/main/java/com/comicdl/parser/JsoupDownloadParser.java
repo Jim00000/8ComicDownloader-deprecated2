@@ -18,6 +18,10 @@ public class JsoupDownloadParser extends DownloadParser {
 		super(id, chapter, page);
 	}
 	
+	public JsoupDownloadParser(String id, int chapter, int page) throws IOException {
+		this(Integer.parseInt(id), chapter, page);
+	}
+	
 	@Override
 	public String decode() {
 		Elements scripts = super.getDocument().body().getElementsByTag("script");

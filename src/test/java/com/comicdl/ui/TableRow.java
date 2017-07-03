@@ -23,6 +23,10 @@ public class TableRow {
 	public synchronized final void setPage(String page) {
 		this.page.set(page);
 	}
+	
+	public synchronized final void setPage(Integer page) {
+		this.page.set(page.toString());
+	}
 
 	public synchronized final ProgressBar getProgress() {
 		return progress.get();

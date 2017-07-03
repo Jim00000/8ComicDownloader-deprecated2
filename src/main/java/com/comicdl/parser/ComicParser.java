@@ -1,6 +1,7 @@
 package com.comicdl.parser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,7 +25,7 @@ public class ComicParser extends HTMLParser implements IComicInfo {
 		// 使用regex找出www.comicbus.com/html/%d的字串模式並取出%d
 		Pattern pattern = Pattern.compile("http://www.comicbus.com/html/(\\d+).html");
 		Matcher matcher = pattern.matcher(super.getUrlString());
-		String id = (matcher.find())? matcher.group(1) : null;
+		String id = (matcher.find()) ? matcher.group(1) : null;
 		log.debug("取得漫畫id：" + id);
 		return id;
 	}
@@ -89,6 +90,9 @@ public class ComicParser extends HTMLParser implements IComicInfo {
 	@Override
 	public List<Element> volumeAsList() {
 		Element table = super.getDocument().getElementById("rp_comiclist2_0_dl_0");
+		if (table == null) {
+			return new ArrayList<Element>();
+		}
 		Elements tds = table.getElementsByTag("a");
 		// 將<a>的內容字串轉換為List
 		List<Element> volumes = IteratorUtils.toList(tds.iterator());
@@ -99,6 +103,9 @@ public class ComicParser extends HTMLParser implements IComicInfo {
 	@Override
 	public List<Element> episodeAsList() {
 		Element table = super.getDocument().getElementById("rp_comiclist11_0_dl_0");
+		if (table == null) {
+			return new ArrayList<Element>();
+		}
 		Elements tds = table.getElementsByTag("a");
 		// 將<a>的內容字串轉換為List
 		List<Element> episodes = IteratorUtils.toList(tds.iterator());

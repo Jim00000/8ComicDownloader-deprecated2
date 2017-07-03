@@ -16,7 +16,7 @@ public class UIComicComponent {
 
 	@Override
 	public String toString() {
-		return String.format("[%s][%s][%s]", downloader.getComicName(),downloader.getAuthor(),downloader.getComicUpdate());
+		return String.format("[%s][%s][%s][%s][%s]",downloader.getComicId() ,downloader.getComicName(),downloader.getAuthor(),downloader.getComicUpdate(),downloader.getEpisodeRange());
 	}
 	
 	

@@ -1,5 +1,7 @@
 # 8ComicDownloader
 
+[![Build Status](https://travis-ci.org/Jim00000/8ComicDownloader.svg?branch=master)](https://travis-ci.org/Jim00000/8ComicDownloader)
+
 - 此專案由過去所開發的8comic下載器專案
 https://github.com/Jim00000/8ComicDownloader-deprecated
 做延伸並修改架構而來

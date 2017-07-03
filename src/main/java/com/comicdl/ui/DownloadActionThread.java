@@ -56,7 +56,7 @@ public class DownloadActionThread extends Thread {
 				if (prog >= 1.0) {
 					e.consume();
 					timer.stop();
-					log.debug("STOP IT");
+					log.debug("已完成下載");
 				}
 			}
 		}));

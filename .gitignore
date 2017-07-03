@@ -18,6 +18,7 @@ buildNumber.properties
 
 # Local bin
 *.exe
+*.jar
 
 # Specified folder
 src/resources/

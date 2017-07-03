@@ -66,13 +66,13 @@ public class QuickDownloader extends ComicDownloader {
 
 		for (Element episode : episodes) {
 			if (StringUtils.equals(episode.attr("id"), "c" + chapter)) {
-				return episode.html();
+				return episode.text();
 			}
 		}
 
 		for (Element volume : volumes) {
 			if (StringUtils.equals(volume.attr("id"), "c" + chapter)) {
-				return volume.html();
+				return volume.text();
 			}
 		}
 
